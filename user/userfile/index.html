@@ -1,89 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
-	  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fitness Log</title>
+
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@1,700;1,800&display=swap" rel="stylesheet">
     <link href="./css/reset.css" rel="stylesheet" type="text/css" />
     <link href="./css/fitnessLog.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="./css/barchart.css">
+    <link href="./css/reminder.css" rel="stylesheet" type="text/css" />
+    <link href="./css/barchart.css" rel="stylesheet">
+    <script defer src="./js/fitnessLog.js"></script>
     <script defer src="https://d3js.org/d3.v6.min.js"></script>
-    <script defer type="module" src="./js/fitnessLog.js"></script> 
-    <!-- added type module here in line 14 might break some stuff-->
-    <script type="module" src="./js/main.js"></script>
-  </head>
+    <script defer type="module" src="./js/reminder.js"></script>
+    <!--
+    <script defer type="module" src="./js/main.js"></script>
+    -->
+</head>
+<body>
+    <div id="progress-modal" class="modal">
+      <div class="modal-content">
+        <span id="close-modal" class="close">&times;</span>
+        <div id="progress-form">
+          <div id="progress-form-inputs">
+            <div class="progress-form-item">
+              <label>
+                View Activity for:
+              </label>
+              <select name="view-activities" id="view-activity-dropdown" >
+                <option value="Walk">Walk</option>
+                <option value="Run">Run</option>
+                <option value="Swim">Swim</option>
+                <option value="Bike">Bike</option>
+                <option value="Yoga">Yoga</option>
+                <option value="Soccer">Soccer</option>
+                <option value="Basketball">Basketball</option>
+              </select>  
+            </div>
+            <div class="progress-form-item">
+              <label>
+                For week ending:
+              </label>
+              <input type="date" id="viewAct-date" />
+            </div>
+          </div>
+          <button type="button" id="submit-progress-form-button" class="form-button">Go</button>
+        </div>
+        <div id="barchart-wrapper">
+          <div id='chart-anchor'></div>
+        </div>
+      </div>
+    </div>
 
-  <body>
     <!-- Fitness Log Banner -->
     <nav>
-      <h3>Fitness Log</h3>
+      <img id="tractivity-white" src="./images/tractivity-logo-white.png" alt="tractivity white logo" />
+      <a href="/logout" class="logout">Logout</a>
     </nav>
-
+  
     <!-- Fitness Log Welcome Message -->
     <header>
       <div id="welcome">
+
         <h1>Welcome back,<br><span id="username">Joey!</span></h1>
-        <img id="workoutImage" src="header_image.png" alt="people playing sports" />
+        <img id="workoutImage" src="./images/header_image.png" alt="people playing sports" />
         <p class="subtitle">What activity session are you logging?</p>
       </div>
     </header>
-    
+      
     <main>
-    <div id="ReminderDivOuter" class="ReminderDivOuter">
-      <div id = "ReminderDivOuterOuter" class = "ReminderDivOuterOuter"> 
-        <p id="ReminderTag" class="ReminderTag">Reminder</p>
-        <div id = "YesNoDiv", class = "YesNoDiv">  
-          <p id="PastActivityQuestion" class="PastActivityQuestion">
-            </p>
-        <!-- This Div Ends ReminderDivInner // the ReminderTag and Biking Tag-->
-        
-         <!-- <div class = "PadClass">  -->
-          <input type = "button" value ="Yes" id = YesButton class = "ButtonClass PadLeft"></input>
-          <input type = "button" value ="No" id = NoButton class = "ButtonClass PadLeft"></input>
-         <!-- </div> -->
-        </div> <!-- This Ends The Yes No Div-->
-      </div> <!--End ReminderDivOuterOuter --> 
-    </div>
 
-    
+      <!-- Reminder Section -->
+      <div id="reminder-section">
+        <div id="reminder-tag">Reminder</div>
+        <div id="reminder-interaction-section">
+          <div id="reminder-question">Did you Bike yesterday?</div>
+          <div id="reminder-option-wrapper">
+            <div id="reminder-option-yes" class="reminder-option">Yes</div>
+            <div id="reminder-option-no" class="reminder-option">No</div>
+          </div>
+        </div>
+      </div>
 
       <!-- Past Activities Section -->
       <div id="past-activity" class="main-container">
-        <h3 class="container-title">Past Activity <button class="view-progress bar-shadow">View Progress</button></h3>
-
-        <!-- View Progress Modal-->
-        <div class="modal">
-          <div class="modal-content bar-padding ">
-            <span class="close-button">&times;
-            </span>
-            <div class= "col-grid flex-display"> 
-              <div class='bar-grid' >
-                <label class="text-display view-activity">View activity for: </label>
-                <select class="bar-shadow min-width" name="modal-activies-bar" id="modal-activity-bar" >
-                  <option value="Walk">Walk</option>
-                  <option value="Run">Run</option>
-                  <option value="Swim">Swim</option>
-                  <option value="Bike">Bike</option>
-                  <option value="Yoga">Yoga</option>
-                  <option value="Soccer">Soccer</option>
-                  <option value="Basketball">Basketball</option>
-                </select>
-              </div>
-              <div class="bar-grid">
-                <label class='text-display view-activity '>Week ending: </label>
-                <input class="bar-shadow view-activity min-width" type="date" id="modal-week-ending"></input>
-              </div>  
-              <button id="bar-chart-button" class="go bar-shadow view-activity"> Go</button>
-            </div>
-            <div id='chart-anchor' class="bar-graph-style">
-            </div>
-          </div>
-        </div> 
+        <div id="pAct-and-progress">
+          <h3 class="container-title">Past Activity</h3>
+          <button type="button" id="view-progress-button" class="form-button">View Progress</button>
+        </div>
 
         <div class="content-container">
+
           <!-- Past Activities Add New Button -->
           <div id="pAct-Add" class="form-container">
             <button id="addPastActivityButton" class="addBtn">Add New Activity</button>
@@ -91,7 +101,7 @@
           
           <!-- Past Activities Form -->
           <div id="pAct-Form" class="form-container hide">
-            <div class="pseudoform">
+            <div class="form">
               <label>
                 Date
                 <input type="date" id="pAct-date" />
@@ -99,7 +109,7 @@
 
               <div id="activity-for-wrapper">
                 <label>
-                  Activity
+                  View Activity for:
                   <select name="past-activies" id="pAct-activity" >
                     <option value="Walk">Walk</option>
                     <option value="Run">Run</option>
@@ -141,7 +151,7 @@
           
           <!-- Future Plans Form -->
           <div id="fAct-Form" class="form-container hide">
-            <div class="pseudoform">
+            <div class="form">
               <label>
                   Date
                 <input type="date" id="fAct-date" />
@@ -163,6 +173,8 @@
           </div>
         </div>
       </div>
+
     </main>
-  </body>
+  
+</body>
 </html>
